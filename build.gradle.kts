@@ -46,7 +46,6 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
 
     // dev
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 
     // config
@@ -65,6 +64,9 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.3.0")
     testImplementation("io.kotest.extensions:kotest-extensions-testcontainers:2.0.2")
+
+    // mockk
+    testImplementation("io.mockk:mockk:1.13.6")
 }
 
 kotlin {
