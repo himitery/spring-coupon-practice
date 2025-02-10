@@ -3,7 +3,7 @@ package dev.himitery.coupon.modules.coupon.application.facade
 import dev.himitery.coupon.modules.coupon.application.dto.`in`.CouponRes
 import dev.himitery.coupon.modules.coupon.domain.exception.CouponSoldOutException
 import dev.himitery.coupon.shared.config.TestcontainersConfig
-import dev.himitery.coupon.shared.property.CouponProperty
+import dev.himitery.coupon.shared.property.TestProperty
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.common.runBlocking
 import io.kotest.core.spec.style.FunSpec
@@ -22,13 +22,13 @@ import org.springframework.test.context.jdbc.Sql
 @Sql("/data.sql")
 class CouponFacadeTest(
     private val couponFacade: CouponFacade,
-    private val couponProperty: CouponProperty,
+    private val testProperty: TestProperty,
 ) : FunSpec({
 
     test("쿠폰이 남아 있다면 발급 받는다.") {
         // given
         val userId = "test_user"
-        val couponSetId = couponProperty.testId.full
+        val couponSetId = testProperty.couponSetId.full
 
         // when
         val coupon = couponFacade.issue(userId, couponSetId)
@@ -41,7 +41,7 @@ class CouponFacadeTest(
     test("쿠폰이 남아 있지 않다면 발급에 실패한다.") {
         // given
         val userId = "test_user"
-        val couponSetId = couponProperty.testId.zero
+        val couponSetId = testProperty.couponSetId.zero
 
         // when
         val throwable = { couponFacade.issue(userId, couponSetId) }
@@ -56,7 +56,7 @@ class CouponFacadeTest(
     test("동시에 쿠폰 발급을 시도해도 원자성이 보장된다.") {
         // given
         val userCount = 1_000
-        val couponSetId = couponProperty.testId.one
+        val couponSetId = testProperty.couponSetId.one
 
         // when
         val res = runBlocking {

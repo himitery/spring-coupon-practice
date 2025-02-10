@@ -29,9 +29,11 @@ logging:
     org.hibernate.type.descriptor.sql: trace
 
 coupon:
-  testId:
+  code:
+    length: 10
+
+test:
+  couponSetId:
     full: test_coupon_set_full
     one: test_coupon_set_one
     zero: test_coupon_set_zero
-  code:
-    length: 10
