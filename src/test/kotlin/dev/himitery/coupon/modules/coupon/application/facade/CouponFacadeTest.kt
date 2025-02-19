@@ -50,9 +50,6 @@ class CouponFacadeTest(
         shouldThrow<CouponSoldOutException> { throwable() }
     }
 
-    /**
-     * TODO: 동시성 이슈가 발생한다.
-     */
     test("동시에 쿠폰 발급을 시도해도 원자성이 보장된다.") {
         // given
         val userCount = 1_000
