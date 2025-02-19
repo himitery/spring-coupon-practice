@@ -34,6 +34,9 @@ dependencies {
     // web
     implementation("org.springframework.boot:spring-boot-starter-web")
 
+    // retry
+    implementation("org.springframework.retry:spring-retry")
+    
     // validation
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
