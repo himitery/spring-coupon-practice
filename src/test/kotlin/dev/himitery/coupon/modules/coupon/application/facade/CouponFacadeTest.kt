@@ -1,12 +1,14 @@
 package dev.himitery.coupon.modules.coupon.application.facade
 
 import dev.himitery.coupon.modules.coupon.application.dto.`in`.CouponRes
+import dev.himitery.coupon.modules.coupon.domain.exception.CouponLockException
 import dev.himitery.coupon.modules.coupon.domain.exception.CouponSoldOutException
 import dev.himitery.coupon.shared.config.TestcontainersConfig
 import dev.himitery.coupon.shared.property.TestProperty
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.common.runBlocking
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.collections.shouldBeOneOf
 import io.kotest.matchers.equals.shouldBeEqual
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -50,9 +52,6 @@ class CouponFacadeTest(
         shouldThrow<CouponSoldOutException> { throwable() }
     }
 
-    /**
-     * TODO: 동시성 이슈가 발생한다.
-     */
     test("동시에 쿠폰 발급을 시도해도 원자성이 보장된다.") {
         // given
         val userCount = 1_000
@@ -73,7 +72,11 @@ class CouponFacadeTest(
         res.filter { it.isSuccess }.size.shouldBeEqual(1)
         res.filter { it.isFailure }.size.shouldBeEqual(userCount - 1)
         res.filter { it.isFailure }.forEach {
-            it.exceptionOrNull().shouldBeInstanceOf<CouponSoldOutException>()
+            it.exceptionOrNull().shouldBeInstanceOf<Throwable>()
+            it.exceptionOrNull()?.javaClass.shouldBeOneOf(
+                CouponSoldOutException::class.java,
+                CouponLockException::class.java,
+            )
         }
     }
 })
