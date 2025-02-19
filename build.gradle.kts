@@ -42,7 +42,7 @@ dependencies {
 
     // data
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("org.redisson:redisson-spring-boot-starter:3.44.0")
     runtimeOnly("org.postgresql:postgresql")
 
     // dev
